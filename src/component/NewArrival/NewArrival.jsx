@@ -14,7 +14,7 @@ import { errorToast, sucessToast } from "../../Helper/Messages";
 const NewArrivals = () => {
   const favourites = useSelector((state) => state.favourites.items);
 
-  const cart = useSelector((state) => state.cart.items);
+  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isPending, isError, data, error } = UseProduct();
@@ -97,8 +97,15 @@ const NewArrivals = () => {
                 <span className="text-lg font-bold">${product.price}</span>
                 <button
                   onClick={() => {
-                    dispatch(addToCart(product)); // dispatch first
-                    sucessToast("Added to cart!"); // then show toast
+                    if (user == null) {
+                      // agar login nahi hai
+                      errorToast("Please login first!");
+                      navigate("/login"); // 👈 navigate to login
+                    } else {
+                      // agar login hai
+                      dispatch(addToCart(product));
+                      sucessToast("Added to cart!");
+                    }
                   }}
                   className="text-sm text-white bg-black rounded-md p-3"
                 >
