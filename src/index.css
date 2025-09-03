@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* SweetAlert2 close button se border aur focus outline hata do */
+.swal2-close {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

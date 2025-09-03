@@ -4,6 +4,86 @@ import { NavLink, Link } from "react-router-dom";
 import { Logout } from "../../app/features/Auth/Auth";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingCart } from "react-icons/hi";
+import styled from "styled-components";
+
+const NavbarWrapper = styled.nav`
+  width: 100%;
+  background: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+`;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Logo = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+`;
+
+const NavLinks = styled.div`
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4b5563;
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  &.active {
+    color: black;
+    font-weight: 600;
+  }
+  &:hover {
+    color: black;
+  }
+`;
+
+const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const IconWrapper = styled(Link)`
+  position: relative;
+  margin: 0 16px;
+  display: inline-block;
+`;
+
+const Badge = styled.span`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: white;
+  border: 1px solid black;
+  color: black;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 9999px;
+`;
+
+const Button = styled.button`
+  padding: 8px 20px;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+`;
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -12,91 +92,47 @@ const Navbar = () => {
   const cart = useSelector((state) => state.cart.items);
 
   return (
-    <nav className="w-full bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <NavbarWrapper>
+      <Container>
         {/* Logo */}
-        <div className="text-2xl font-bold text-gray-800">FASCO</div>
+        <Logo>FASCO</Logo>
 
         {/* Nav Links */}
-        <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive ? "text-black font-semibold" : "hover:text-black"
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/deals"
-            className={({ isActive }) =>
-              isActive ? "text-black font-semibold" : "hover:text-black"
-            }
-          >
-            Deals
-          </NavLink>
-          <NavLink
-            to="/new-arrivals"
-            className={({ isActive }) =>
-              isActive ? "text-black font-semibold" : "hover:text-black"
-            }
-          >
-            New Arrivals
-          </NavLink>
-          <NavLink
-            to="/packages"
-            className={({ isActive }) =>
-              isActive ? "text-black font-semibold" : "hover:text-black"
-            }
-          >
-            Packages
-          </NavLink>
-        </div>
+        <NavLinks>
+          <StyledNavLink to="/">Home</StyledNavLink>
+          <StyledNavLink to="/deals">Deals</StyledNavLink>
+          <StyledNavLink to="/new-arrivals">New Arrivals</StyledNavLink>
+          <StyledNavLink to="/packages">Packages</StyledNavLink>
+        </NavLinks>
 
-        {/* Right Side (Fav + Auth) */}
-        <div className="flex items-center">
-          <Link to="/FavouritesItems" className="relative mx-4">
+        {/* Right Side */}
+        <RightSide>
+          <IconWrapper to="/FavouritesItems">
             {favourites.length > 0 ? (
-              <FaHeart className="text-red-500 text-2xl" />
+              <FaHeart style={{ color: "red", fontSize: "1.5rem" }} />
             ) : (
-              <FaRegHeart className="text-gray-500 text-2xl" />
+              <FaRegHeart style={{ color: "gray", fontSize: "1.5rem" }} />
             )}
-            {favourites.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white border-black border text-black text-xs px-2 py-0.5 rounded-full">
-                {favourites.length}
-              </span>
-            )}
-          </Link>
-          <div className="relative mx-4">
-            <Link to="/cart">
-              {" "}
-              <HiOutlineShoppingCart className="w-6 h-6 text-gray-700" />
-            </Link>
+            {favourites.length > 0 && <Badge>{favourites.length}</Badge>}
+          </IconWrapper>
 
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white border border-black text-black text-xs px-2 py-0.5 rounded-full">
-                {cart.length}
-              </span>
-            )}
-          </div>
+          <IconWrapper to="/cart">
+            <HiOutlineShoppingCart
+              style={{ fontSize: "1.5rem", color: "#374151" }}
+            />
+            {cart.length > 0 && <Badge>{cart.length}</Badge>}
+          </IconWrapper>
+
           {user ? (
-            <button
-              onClick={() => dispatch(Logout())}
-              className="px-5 py-2 bg-black text-white rounded-lg shadow-md hover:shadow-lg transition"
-            >
-              Logout
-            </button>
+            <Button onClick={() => dispatch(Logout())}>Logout</Button>
           ) : (
-            <Link
-              to="/login"
-              className="px-5 py-2 bg-black text-white rounded-lg shadow-md hover:shadow-lg transition"
-            >
-              Sign In
+            <Link to="/login">
+              <Button>Sign In</Button>
             </Link>
           )}
-        </div>
-      </div>
-    </nav>
+        </RightSide>
+      </Container>
+    </NavbarWrapper>
   );
 };
 

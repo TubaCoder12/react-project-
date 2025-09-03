@@ -9,6 +9,7 @@ import SelectedCart from "./component/SelectedCart/SelectedCart";
 import ProductDetail from "./component/ProductDetail/ProductDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Checkout from "./component/Checkout/Checkout";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/FavouritesItems" element={<FavouritesItems />} />
           <Route path="/cart" element={<SelectedCart />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </Layout>
     </Router>

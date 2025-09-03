@@ -8,6 +8,7 @@ import {
   clearCart,
 } from "../../app/features/CartSlice/cartSlice";
 import { errorToast } from "../../Helper/Messages";
+import { Link } from "react-router-dom";
 
 const SelectedCart = () => {
   const cart = useSelector((state) => state.cart.items);
@@ -23,15 +24,12 @@ const SelectedCart = () => {
     );
   }
 
-  // Calculate totals
-
-  // Calculate totals
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const productsTotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
-  ); // only products
-  const totalPrice = productsTotal + shipping; // subtotal + shipping
+  );
+  const totalPrice = productsTotal + shipping;
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
@@ -49,28 +47,24 @@ const SelectedCart = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Side: Cart Items */}
         <div className="flex-1 flex flex-col gap-4">
           {cart.map((product) => (
             <div
               key={product.id}
               className="flex flex-col sm:flex-row bg-white shadow-md rounded-2xl p-4 hover:shadow-xl transition"
             >
-              {/* Product Image */}
               <img
                 src={product.image}
                 alt={product.title}
                 className="w-full sm:w-20 h-20 object-contain rounded-xl mb-4 sm:mb-0 sm:mr-6"
               />
 
-              {/* Product Details */}
               <div className="flex flex-1 flex-col justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">{product.title}</h3>
                   <p className="text-sm text-gray-500">{product.category}</p>
                 </div>
 
-                {/* Quantity Controls + Remove */}
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
                     <button
@@ -125,9 +119,12 @@ const SelectedCart = () => {
             <span>${totalPrice.toFixed(2)}</span> {/* subtotal + shipping */}
           </div>
 
-          <button className="mt-4 w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition font-semibold">
+          <Link
+            to="/checkout"
+            className="mt-4 w-full bg-black text-white py-3 text-center rounded-lg hover:bg-gray-800 transition font-semibold"
+          >
             Proceed to Checkout
-          </button>
+          </Link>
         </div>
       </div>
     </section>
